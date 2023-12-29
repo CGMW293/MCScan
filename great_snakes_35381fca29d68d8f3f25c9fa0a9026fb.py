@@ -36,7 +36,7 @@ end_ip = ipaddress.IPv4Address('71.0.0.0')
 
 valid_ips = []
 sockets_list = []
-cleanup_interval = 1000 # Adjust the cleanup interval as needed
+cleanup_interval = 1000 # Avoid Storing all IP's in memory 
 
 try:
    for ip in ip_generator(start_ip, end_ip):
@@ -48,7 +48,7 @@ try:
        if len(sockets_list) % cleanup_interval == 0:
            cleanup_threads(sockets_list)
 
-   # Cleanup remaining threads after finishing the loop
+   #Clean threads after finishing
    cleanup_threads(sockets_list)
 
    # Wait for all threads to complete before exiting
@@ -56,6 +56,5 @@ try:
        t.join()
 
 finally:
-   # Now that we have the list of valid IPs, we can get the Minecraft server status
    with open('open_ports25565.txt', 'w') as f:
        get_mc_status(valid_ips, f)
